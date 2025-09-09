@@ -1,0 +1,26 @@
+name: Build Windows EXE
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build exe
+        run: pyinstaller --onefile --add-data "even.gif;." BitWiper.py
+
+      - name: Upload exe artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-exe
+          path: dist/BitWiper.exe
